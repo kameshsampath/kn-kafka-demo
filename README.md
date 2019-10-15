@@ -6,7 +6,7 @@
 curl -L strimzi/strimzi-cluster-operator-0.14.0.yaml \
   | sed 's/namespace: .*/namespace: mykafka/' \
   | kubectl apply -f - -n mykafka
-kubectl apply -f strimzi/kafka-persistent-single.yaml -n mykafka
+kubectl apply -f strimzi/kafka-persistent-single.yml -n mykafka
 ```
 
 ## Setup Knative Serving and Istio
