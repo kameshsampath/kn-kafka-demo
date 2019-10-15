@@ -1,0 +1,10 @@
+---
+apiVersion: messaging.knative.dev/v1alpha1
+kind: Channel
+metadata:
+  name: greetings-channel
+---
+apiVersion: messaging.knative.dev/v1alpha1
+kind: Channel
+metadata:
+  name: translated-greetings

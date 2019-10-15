@@ -1,0 +1,19 @@
+apiVersion: messaging.knative.dev/v1alpha1
+kind: Subscription
+metadata:
+  name: lingua-greeter-sub
+spec:
+  channel:
+    apiVersion: messaging.knative.dev/v1alpha1
+    kind: Channel
+    name: greetings-channel
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: lingua-greeter
+  reply:
+    channel:
+      apiVersion: messaging.knative.dev/v1alpha1
+      kind: Channel
+      name: translated-greetings
