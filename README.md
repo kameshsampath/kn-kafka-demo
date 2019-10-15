@@ -11,10 +11,11 @@ kubectl apply -f strimzi/kafka-persistent-single.yaml -n mykafka
 
 ## Setup Knative Serving and Istio
 
+Please follow bit.ly/knative-tutorial to have your minikube and Knative serving
+
 ## Setup Knative Eventing and  Eventing Sources
 
 ```shell
-
 kubectl apply -f https://github.com/knative/eventing/releases/download/v0.9.0/release.yaml
 
 kubectl apply -f https://github.com/knative/eventing-contrib/releases/download/v0.9.0/kafka-source.yaml
@@ -25,7 +26,10 @@ curl -L https://github.com/knative/eventing-contrib/releases/download/v0.9.0/kaf
 
 ```
 
-default channel is kafka
+Watch the status of the eventing resources `kubectl get -n knative-eventing pods -w`
+
+
+Set the default channel to be  `KafkaChannel`
 
 ```shell
 cat <<-EOF | kubectl apply -f -
@@ -56,8 +60,33 @@ kubectl label namespace knativetutorial knative-eventing-injection=enabled
 
 ## Services
 
-Deploy stream-greeter
-Deploy lingua-greeter
+Make sure you have your docker env setup 
+
+```shell
+eval(minikube docker-env)
+```
+### Stream Greeter
+
+A microservice to send messages to Kafka topic called `greetings`
+
+```shell
+git clone https://github.com/kameshsampath/stream-greeter &&\
+cd stream-greeter &&\
+./buildAndDeploy.sh
+```
+
+### Lingua Greeter
+
+The Knative Eventing sink that will subscribe to `greetings-channel` and performs translation of the incoming message
+
+```shell
+git clone https://github.com/kameshsampath/kn-lingua-greeter &&\
+cd kn-lingua-greeter &&\
+kubectl create secret generic -n knativetutorial google-cloud-creds --from-file=google-cloud-credentials.json=<YOUR GOOGLE API CREDENTIALS> &&\
+./buildAndDeploy.sh
+```
+
+NOTE: It will take few minutes for the Knative service to be available
 
 ## Knative
 
