@@ -7,7 +7,7 @@ spec:
   consumerGroup: knative-group
   # Broker URL. Replace this with the URLs for your kafka cluster,
   # which is in the format of my-cluster-kafka-bootstrap.my-kafka-namespace:9092.
-  bootstrapServers: my-cluster-kafka-external-bootstrap.mykafka:9094
+  bootstrapServers: my-cluster-kafka-external-bootstrap.kafka:9094
   topics: greetings
   sink:
     apiVersion: messaging.knative.dev/v1alpha1

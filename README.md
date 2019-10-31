@@ -1,27 +1,34 @@
 # Knative Eventing - Kafka Demo
 
+## Clone this repo
+
+```shell
+git clone https://github.com/kameshsampath/kn-kafka-demo
+cd kn-kafka-demo
+export PROJECT_HOME=`pwd`
+```
+
 ## Setup Kafka
 
 ```shell
-curl -L strimzi/strimzi-cluster-operator-0.14.0.yaml \
-  | sed 's/namespace: .*/namespace: mykafka/' \
-  | kubectl apply -f - -n mykafka
-kubectl apply -f strimzi/kafka-persistent-single.yml -n mykafka
+cat strimzi/strimzi-cluster-operator-0.14.0.yaml \
+  | sed 's/namespace: .*/namespace: kafka/' \
+  | kubectl apply -f - -n kafka
+# using ephemeral kafka
+kubectl apply -f strimzi/kafka-persistent-single.yml -n kafka
 ```
 
 ## Setup Knative Serving and Istio
 
-Please follow bit.ly/knative-tutorial to have your minikube and Knative serving
+Please follow bit.ly/knative-tutorial to have your minikube and Knative serving/eventing
 
 ## Setup Knative Eventing and  Eventing Sources
 
 ```shell
-kubectl apply -f https://github.com/knative/eventing/releases/download/v0.9.0/release.yaml
+kubectl apply -f https://github.com/knative/eventing-contrib/releases/download/v0.8.2/kafka-importer.yaml
 
-kubectl apply -f https://github.com/knative/eventing-contrib/releases/download/v0.9.0/kafka-source.yaml
-
-curl -L https://github.com/knative/eventing-contrib/releases/download/v0.9.0/kafka-channel.yaml \
-  | sed 's/ bootstrapServers: REPLACE_WITH_CLUSTER_URL/  bootstrapServers: my-cluster-kafka-external-bootstrap.mykafka:9094/' \
+curl -L https://github.com/knative/eventing-contrib/releases/download/v0.8.2/kafka-channel.yaml \
+  | sed 's/ bootstrapServers: REPLACE_WITH_CLUSTER_URL/  bootstrapServers: my-cluster-kafka-external-bootstrap.kafka:9094/' \
   | kubectl apply -f -
 
 ```
@@ -60,7 +67,7 @@ kubectl label namespace knativetutorial knative-eventing-injection=enabled
 
 ## Services
 
-Make sure you have your docker env setup 
+Make sure you have your docker env setup
 
 ```shell
 eval(minikube docker-env)
@@ -125,7 +132,7 @@ kubectl create -f $PROJECT_HOME/knative/03-subscription.yaml
 Check the status of the subscription using the command:
 
 ```shell
-kubectl get subscriptions.messaging.knative.dev lingua-greeter-sub
+kubectl get subscriptions.eventing.knative.dev lingua-greeter-sub
 ```
 
 A successfully created subscription should show an output like:
