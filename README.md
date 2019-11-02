@@ -171,5 +171,5 @@ knative-messaging-kafka.translated-greetings
 Get list of topics
 
 ```shell
-kubectl -n mykafka run kafka-topics-list -ti --image=strimzi/kafka:0.14.0-kafka-2.3.0 --rm=true --restart=Never -- bin/kafka-topics.sh --list --bootstrap-server my-cluster-kafka-external-bootstrap:9094
+kubectl -n knativetutorial run kafka-topics-list -ti --image=strimzi/kafka:0.14.0-kafka-2.3.0 --rm=true --restart=Never -- bin/kafka-topics.sh --list --bootstrap-server my-cluster-kafka-external-bootstrap.kafka:9094
 ```
